@@ -133,33 +133,30 @@
         let id = $(this).data("id");
         let order = $(this).data("order");
         let body_class_list = $('.body_list_barang');
-        let barangs = <?= json_encode(barang()); ?>;
 
-        if (text.length > 0) {
+        post("pengeluaran/cari_barang", {
+            text,
+            jenis: ["Kulakan", "Barang"]
+        }, "No").then(res => {
+            barangs = res.data;
+            let barang_arr = res.data;
 
-            let matchedProducts = barangs.filter(product =>
-                product.barang.toLowerCase().includes(text)
-            );
-
-            if (matchedProducts.length > 0) {
+            if (barang_arr.length > 0) {
                 let html = '';
-                matchedProducts.forEach(e => {
+                barang_arr.forEach(e => {
                     html += `
-                        <div class="list_barang" data-barang_id="${e.id}" data-order="${order}" data-id="${id}">
-                            <div class="d-flex justify-content-between">
-                                <span class="nama_barang_${e.id}">${e.barang}</span>
-                                <span class="text-muted">${angka(e.harga)} [${angka(e.qty)}]</span>
-                            </div>
-                        </div>`;
+                            <div class="list_barang" data-barang_id="${e.id}" data-order="${order}" data-id="${id}">
+                                <div class="d-flex justify-content-between">
+                                    <span>${e.barang}</span>
+                                    <span class="text-muted">${angka(e.harga)} [${angka(e.qty)}]</span>
+                                </div>
+                            </div>`;
                 });
-
                 body_class_list.html(html).show();
             } else {
-                body_class_list.html('<div class="list_barang text-muted">No data found</div>').show();
+                body_class_list.html('<div class="list_hasil text-muted">No data found</div>').show();
             }
-        } else {
-            body_class_list.hide();
-        }
+        })
     });
 
 

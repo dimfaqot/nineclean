@@ -172,4 +172,13 @@ class Pengeluaran extends BaseController
 
         sukses_js("Ok", $data, $total['biaya']);
     }
+
+    public function cari_barang()
+    {
+        $text = clear($this->request->getVar("text"));
+        $jenis = json_decode(json_encode($this->request->getVar("jenis")), true);
+        $data = db('barang')->whereIn('jenis', $jenis)->like("barang", $text, "both")->orderBy('barang', 'ASC')->limit(7)->get()->getResultArray();
+
+        sukses_js("Ok", $data);
+    }
 }
