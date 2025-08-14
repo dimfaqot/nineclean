@@ -57,7 +57,7 @@ class Transaksi extends BaseController
             if (!$barang) {
                 gagal_js("Id " . $i['barang'] . " not found");
             }
-            if ($barang['jenis'] !== "Layanan") {
+            if ($barang['jenis'] == "Barang") {
                 $barang['qty'] -= (int)$i['qty'];
                 if (!db('barang')->where('id', $barang['id'])->update($barang)) {
                     gagal_js("Update stok gagal");
@@ -122,8 +122,12 @@ class Transaksi extends BaseController
             if (!$barang) {
                 gagal_js("Id " . $i['barang'] . " not found");
             }
-            $barang['qty'] -= (int)$i['qty'];
-            db('barang')->where('id', $barang['id'])->update($barang);
+            if ($barang['jenis'] == "Barang") {
+                $barang['qty'] -= (int)$i['qty'];
+                if (!db('barang')->where('id', $barang['id'])->update($barang)) {
+                    gagal_js("Update stok gagal");
+                }
+            }
         }
 
 
