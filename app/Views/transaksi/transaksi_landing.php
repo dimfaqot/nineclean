@@ -594,6 +594,7 @@
                             <button type="button" class="btn btn-outline-danger btn_simpan_hutang">SiMPAN HUTANG</button>
                         </div>`;
                 $('.before_hutang').after(html);
+ $('.before_hutang').remove();
             } else {
                 $(".btn_simpan_hutang").remove();
                 html += `<button type="button" class="btn btn-outline-danger btn_simpan_hutang">SiMPAN HUTANG</button>`;
