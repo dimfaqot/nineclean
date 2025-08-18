@@ -18,15 +18,11 @@
 </div>
 
 
-<div class="form-floating mb-2">
-    <select class="form-select bg-dark text-light jenis">
-        <option selected value="">Pilih Jenis</option>
-        <?php foreach (options('Inv') as $i): ?>
-            <option value="<?= $i['value']; ?>"><?= $i['value']; ?></option>
-        <?php endforeach; ?>
-    </select>
-    <label>Pilih Jenis</label>
-</div>
+<?php if (user()['role'] == "Root"): ?>
+    <input type="hidden" value="Modal" class="jenis">
+<?php else: ?>
+    <input type="hidden" value="Inv" class="jenis">
+<?php endif; ?>
 <div class="form-floating mb-2">
     <input type="text" class="form-control bg-dark text-light border border-warning pj">
     <label class="text-secondary">Pj</label>
