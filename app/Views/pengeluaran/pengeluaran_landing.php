@@ -136,7 +136,7 @@
 
         post("pengeluaran/cari_barang", {
             text,
-            jenis: ["Kulakan", "Barang"]
+            jenis: ["Kulakan", "Barang", "Bisyaroh"]
         }, "No").then(res => {
             barangs = res.data;
             let barang_arr = res.data;
