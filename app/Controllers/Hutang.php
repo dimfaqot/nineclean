@@ -65,8 +65,8 @@ class Hutang extends BaseController
     public function bayar()
     {
         $user_id = clear($this->request->getVar('user_id'));
-        $uang = angka_to_int(clear($this->request->getVar('uang')));
-        $biaya = angka_to_int(clear($this->request->getVar('biaya')));
+        $uang = clear($this->request->getVar('uang'));
+        $biaya = clear($this->request->getVar('biaya'));
         $data = db('hutang')->where('user_id', $user_id)->orderBy('tgl', "ASC")->get()->getResultArray();
 
         if ($uang < $biaya) {
@@ -76,7 +76,7 @@ class Hutang extends BaseController
         $db = \Config\Database::connect();
         $db->transStart();
 
-        $no_nota = next_invoice();
+        $no_nota = 'Next invoice';
 
         $tgl = time();
 

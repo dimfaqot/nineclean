@@ -34,35 +34,4 @@ class Guest extends BaseController
         $this->response->setHeader('Content-Type', 'application/pdf');
         $mpdf->Output($judul . '.pdf', 'I');
     }
-
-    public function login()
-    {
-        $username = strtolower(clear($this->request->getVar('username')));
-        $password = $this->request->getVar('password');
-
-        $q = db('user')->where('username', $username)->get()->getRowArray();
-
-        if (!$q) {
-            gagal(base_url(), "User not found");
-        }
-
-        if (!password_verify($password, $q['password'])) {
-            gagal(base_url(), "Password salah");
-        }
-
-        $data = [
-            'id' => $q['id']
-        ];
-
-        session()->set($data);
-        sukses(base_url('home'), 'Login sukses.');
-    }
-
-    public function logout()
-    {
-        session()->destroy();
-        session()->setFlashdata('sukses', "Logout sukses");
-        header("Location: " . base_url());
-        die;
-    }
 }

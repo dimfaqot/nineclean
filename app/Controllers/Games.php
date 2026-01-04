@@ -2,12 +2,12 @@
 
 namespace App\Controllers;
 
-class Barang extends BaseController
+class Games extends BaseController
 {
     function __construct()
     {
         if (!session('id')) {
-            session()->setFlashdata('gagal', "Ligin first");
+            session()->setFlashdata('gagal', "Login first");
             header("Location: " . base_url());
             die;
         }

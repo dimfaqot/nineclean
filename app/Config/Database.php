@@ -50,6 +50,32 @@ class Database extends Config
             'time'     => 'H:i:s',
         ],
     ];
+    public array $bkw = [
+        'DSN'          => '',
+        'hostname'     => 'localhost',
+        'username'     => 'root',
+        'password'     => '',
+        'database'     => 'bkw',
+        'DBDriver'     => 'MySQLi',
+        'DBPrefix'     => '',
+        'pConnect'     => false,
+        'DBDebug'      => true,
+        'charset'      => 'utf8mb4',
+        'DBCollat'     => 'utf8mb4_general_ci',
+        'swapPre'      => '',
+        'encrypt'      => false,
+        'compress'     => false,
+        'strictOn'     => false,
+        'failover'     => [],
+        'port'         => 3306,
+        'numberNative' => false,
+        'foundRows'    => false,
+        'dateFormat'   => [
+            'date'     => 'Y-m-d',
+            'datetime' => 'Y-m-d H:i:s',
+            'time'     => 'H:i:s',
+        ],
+    ];
 
     //    /**
     //     * Sample database connection for SQLite3.
@@ -198,6 +224,16 @@ class Database extends Config
         // we don't overwrite live data on accident.
         if (ENVIRONMENT === 'testing') {
             $this->defaultGroup = 'tests';
+        }
+        if (getenv('ONLINE') == 1) {
+            $this->default['hostname'] = getenv('database.default.hostname');
+            $this->default['username'] = getenv('database.default.username');
+            $this->default['password'] = getenv('database.default.password');
+            $this->default['database'] = getenv('database.default.database');
+
+            $this->bkw['database'] = getenv('db_name_bkw');
+            $this->bkw['username'] = getenv('db_username_bkw');
+            $this->bkw['password'] = getenv('db_pass_bkw');
         }
     }
 }

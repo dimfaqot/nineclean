@@ -8,16 +8,17 @@
     <!-- Bootstrap 5.2 CSS -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="icon" type="image/png" href="<?= base_url(); ?>logo.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="https://bkw.walisongosragen.com/logo.png" sizes="16x16">
 
     <link href="<?= base_url(); ?>fontawesome/css/all.css" rel="stylesheet">
+
 </head>
 
 <body style="background-color: #2A2A2A;" class="text-light">
 
     <div class="container" style="margin-top: 80px;">
         <?= view("templates/navbar"); ?>
-        <div class="bg-white opacity-75 px-5 pt-4 message" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; border-radius: 0.5rem;display:none">
+        <div class="bg-white pt-4 message" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; border-radius: 0.5rem;display:none;width:80%;">
 
         </div>
 
