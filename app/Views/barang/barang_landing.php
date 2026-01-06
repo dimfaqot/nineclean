@@ -10,24 +10,27 @@
     let status = "";
     let datas = [];
     let jenis = [];
-    let divisions = ['Kantin', 'Barber'];
+    let divisions = [];
     let divisi = "Kantin"
 
     let main = (order = undefined) => {
         let html = '';
 
-        html += `<div class="d-flex justify-content-center gap-2 my-3 py-2 bg-secondary rounded border">`;
+        if (divisions.length > 1) {
+            html += `<div class="d-flex justify-content-center gap-2 my-3 py-2 bg-secondary rounded border">`;
 
-        divisions.forEach(e => {
-            html += `<div class="form-check form-switch">
-                            <input class="form-check-input" type="radio" ${(e==divisi?"checked":"")} role="switch" name="divisi" value="${e}">
-                            <label class="form-check-label">${e}</label>
-                        </div>`;
-        })
+            divisions.forEach(e => {
+                html += `<div class="form-check form-switch">
+                                <input class="form-check-input" type="radio" ${(e==divisi?"checked":"")} role="switch" name="divisi" value="${e}">
+                                <label class="form-check-label">${e}</label>
+                            </div>`;
+            })
 
-        html += `</div>
-            
-            <div class="input-group input-group-sm mb-2">
+            html += `</div>`;
+
+        }
+
+        html += `<div class="input-group input-group-sm mb-2">
                 <input type="text" class="form-control bg-dark text-light border-secondary cari_card" placeholder="Cari..." aria-label="Recipient's username" aria-describedby="button-addon2">
                 <button class="btn btn-outline-light form_input" data-order="Add" type="button"><i class="fa-solid fa-circle-plus"></i> <?= menu()['menu']; ?></button>
             </div>`;
@@ -76,6 +79,7 @@
                         datas = res.data;
                         status = res.data2;
                         jenis = res.data3;
+                        divisions = res.data4;
                         main();
 
                     } else {

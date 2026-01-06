@@ -15,7 +15,7 @@ class Transaksi extends BaseController
     public function index(): string
     {
 
-        if (session('db') == "playground") {
+        if (session('db') == "playground" || session('db') == "playbox") {
             return view('playground/transaksi_landing', ['judul' => menu()['menu']]);
         } else {
             return view(menu()['controller'] . '/' . menu()['controller'] . "_" . 'landing', ['judul' => menu()['menu']]);

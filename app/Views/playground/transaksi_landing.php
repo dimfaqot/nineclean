@@ -6,15 +6,9 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    // $('.message').show();
     loading();
-    // let options_games = [];
     let update_waktu = []; //berisi id transaksi meja aktif untuk mengupdate waktu main
-    // let games = [];
-    // let todays = [];
-    // let hutangs = [];
-    // let wls = [];
-    // let times = [];
+
     let barangs = [];
     let datas = []; //data yang akan ditransaksi
     // let data_awal_pesanan = [];
@@ -22,7 +16,7 @@
     let is_tambah_pesanan = false;
     let barang_selected = {};
     let metodes = [];
-    let divisions = ['Kantin', 'Barber', 'Billiard', 'Ps'];
+    let divisions = [];
     let divisi = "Kantin";
     let user_hutang = {}; // orang yang berhutang
 
@@ -402,8 +396,7 @@
             kategori: "Metode",
             format: "array",
             tabel: 'transaksi',
-            divisi,
-            divisions
+            divisi
         };
         post("home/encode_jwt", {
             data
@@ -414,6 +407,7 @@
                     if (res.status == "200") {
                         barangs = res.data
                         metodes = res.data2;
+                        divisions = res.data3;
                         let menu_arr = [{
                             menu: 'Kasir',
                             icon: '<i class="fa-solid fa-cash-register"></i>'
@@ -697,20 +691,21 @@
             $(".body_list_barang").html("");
             return;
         } else {
-            let hasil = barangs[divisi].filter(item => item.barang.toLowerCase().includes(text));
+            let hasil = barangs[divisi].filter(item =>
+                item.jenis !== "Kulakan" && item.barang.toLowerCase().includes(text.toLowerCase())
+            );
             // tampilkan hasil
             let html = "";
             hasil.forEach(e => {
                 html += `<div class="select_barang" data-id="${e.id}" >
-                                <div class="d-flex justify-content-between ${(e.link !=="" && e.tipe=="Mix"?"text-warning":"")}">
-                                    <span>${e.barang}</span>
-                                    <span class="text-muted">${angka(e.harga)} [${angka(e.qty)}]</span>
-                                </div>
-                        </div>`;
+                        <div class="d-flex justify-content-between ${(e.link !=="" && e.tipe=="Mix"?"text-warning":"")}">
+                            <span>${e.barang}</span>
+                            <span class="text-muted">${angka(e.harga)} [${angka(e.qty)}]</span>
+                        </div>
+                    </div>`;
             });
             $(".body_list_barang").html(html);
         }
-
     });
 
     $(document).on('click', '.select_barang', function(e) {

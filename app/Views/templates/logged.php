@@ -104,11 +104,15 @@
 <body style="background-color: #2A2A2A;" class="text-light">
 
     <div class="container" style="margin-top: 80px;">
-        <?php if (!(menu()['controller'] == "transaksi" && session('db') == "playground")): ?>
+        <?php if (session('db') == "playground" || session('db') == "playbox"): ?>
+            <?php if (menu()['controller'] !== "transaksi"): ?>
+                <?= view("templates/navbar"); ?>
+            <?php endif; ?>
+        <?php else: ?>
             <?= view("templates/navbar"); ?>
         <?php endif; ?>
 
-        <?php if (session('db') == "playground" && menu()['controller'] == "transaksi"): ?>
+        <?php if ((session('db') == "playground" || session('db') == "playbox") && menu()['controller'] == "transaksi"): ?>
             <div class="bg-white message pt-4" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; border-radius: 0.5rem;width:30%;display:none">
 
             </div>
@@ -284,8 +288,12 @@
                 tabel,
                 kategori,
                 format: "array",
+                divisi,
                 admin: role
             };
+            if (typeof divisi !== "undefined") {
+                data['divisi'] = divisi;
+            }
 
             post("home/encode_jwt", {
                 data
@@ -792,8 +800,7 @@
             if (ket == "bayar hutang user") {
                 data['order'] = ket;
             }
-            console.log(data);
-            return;
+
             post("home/encode_jwt", {
                 data
             }).then(req => {
@@ -804,22 +811,23 @@
                         if (ket == "bayar" || ket == "bayar hutang" || ket == "bayar transaksi" || ket == "hutang" || ket == "bayar hutang user") {
                             let jdl = (ket == "hutang" ? "HUTANG" : "INVOICE");
                             setTimeout(() => {
-
-                                let html = build_html(jdl, "modal", ["judul", "garis"]);
                                 if (ket == "hutang") {
-                                    html += res.data;
+                                    message("400", res.data);
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 1200);
                                 } else {
+                                    let html = build_html(jdl, "modal", ["judul", "garis"]);
                                     html += `<iframe id="nota_frame" src="${res.data}" style="border: none; width: 100%; height: 600px;"></iframe>`;
                                     html += `
                                                 <div class="d-grid mt-5">
                                                     <button class="btn btn-secondary selesai">Selesai</button>
                                                 </div>
                                             `;
-
+                                    $(".body_modal_static").html(html);
+                                    modal_static.show();
                                 }
 
-                                $(".body_modal_static").html(html);
-                                modal_static.show();
 
                             }, 1200);
 
