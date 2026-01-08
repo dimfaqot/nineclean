@@ -522,7 +522,7 @@
         }
 
         let data = {
-            order: "Cari User",
+            order,
             text,
             id: 0,
             filters: ["Admin", "Karyawan"],
@@ -531,6 +531,7 @@
         };
 
         if (order == "hutang") {
+            data['order'] = "Cari User";
             delete data.filters;
             data['is_data'] = "hutang";
         }

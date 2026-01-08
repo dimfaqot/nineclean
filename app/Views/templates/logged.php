@@ -1123,6 +1123,68 @@
             return html;
 
         }
+        const table2 = (res, order, jenis = "All", tahuns, bulans, tahun, bulan) => {
+            let html = '';
+
+            html += `<div class="input-group input-group-sm mb-2">
+                <input type="text" class="form-control bg-dark text-light border-secondary cari" placeholder="Cari...">
+            </div>`;
+
+            html += `<div class="d-grid my-2"><a href="" data-order="${order}" class="btn btn-sm btn-secondary cetak" data-jenis="${jenis}"><i class="fa-solid fa-file-pdf"></i> CETAK</a></div>`;
+            if (jenis == "Tahunan" && role == "Root") {
+                html += `<div class="d-grid my-2"><a href="" class="btn btn-sm btn-success backup"><i class="fa-solid fa-database"></i> BACKUP</a></div>`;
+
+            }
+            if (jenis == "All") {
+                html += `
+                    <div>Masuk: ${angka(res.data.masuk)}</div>
+                    <div>Keluar: ${angka(res.data.keluar)}</div>
+                    <div class="fw-bold text-warning">TOTAL: ${(res.data.masuk-res.data.keluar<0?"-":"")+angka(res.data.masuk-res.data.keluar)}</div>
+                `;
+            } else {
+                html += `<div style="font-size:12px" class="fw-bold text-warning">TOTAL: ${(res.data.masuk-res.data.keluar<0?"-":"")+angka(res.data.masuk-res.data.keluar)}</div>`;
+            }
+
+
+            if (order == "laporan") {
+                if (jenis == "All") {
+
+                    html += `<table class="table table-dark table-bordered" style="font-size: 16px;">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th class="text-center">Divisi</th>
+                                    <th class="text-center">Masuk</th>
+                                    <th class="text-center">Keluar</th>
+                                    <th class="text-center">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+                    res.data.data.forEach((e, i) => {
+                        html += `<tr>
+                        <td class="text-center">${(i+1)}</td>
+                        <td class="text-start">${e.divisi}</td>`;
+                        let total = 0;
+                        e.data.forEach(d => {
+                            if (d.judul == "Masuk") {
+                                total += parseInt(d.total);
+                            } else {
+                                total -= parseInt(d.total);
+                            }
+                            html += `<td  class="text-end">${angka(d.total)}</td>`;
+                        })
+                        html += `<td class="text-end">${(total<0?"-":"")}${angka(total)}</td>`;
+                        html += `</tr>`;
+                    });
+                    html += `</tbody>
+                        </table>`;
+                }
+            }
+
+
+            return html;
+
+        }
 
         $(document).on('click', '.data', function(e) {
             e.preventDefault();
@@ -1157,8 +1219,12 @@
                         datases = res.data;
                         metodes = res.data3;
                         loading("close");
-
-                        let html = table(res.data, res.data2, res.data3, order, data.jenis, tahuns, bulans, tahun, bulan);
+                        let html = '';
+                        if (db == "playground" || db == "playbox") {
+                            html += table2(res, order, data.jenis, tahuns, bulans, tahun, bulan);
+                        } else {
+                            html += table(res.data, res.data2, res.data3, order, data.jenis, tahuns, bulans, tahun, bulan);
+                        }
 
                         if (controller == "home") {
                             $(".body_detail").html(html);
